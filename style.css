@@ -248,16 +248,26 @@ body {
     image-rendering: pixelated;
 }
 
+.clear-gallery, .close-gallery-x {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 2px 2px 0px #1A1A1A;
+    transition: all 0.1s;
+}
+
 .clear-gallery {
     background: #606060;
     color: #F0F0F0;
     border: none;
-    border-radius: 20px;
-    padding: 8px 16px;
-    font-size: 12px;
     cursor: pointer;
     font-family: 'Courier New', monospace;
-    font-weight: bold;
     text-transform: uppercase;
 }
 
@@ -265,11 +275,21 @@ body {
     background: #404040;
 }
 
-.pixelate {
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -webkit-crisp-edges;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
+.close-gallery-x {
+    background: #808080;
+    color: #E0E0E0;
+    border: none;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.close-gallery-x:hover {
+    background: #1A1A1A;
+}
+
+.close-gallery-x:active, .clear-gallery:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px #1A1A1A;
 }
 
 .confirm-dialog {
