@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Boy Camera</title>
-    <meta name="description" content="Game Boy Camera Simulator">
-    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiR2FtZSBCb3kgQ2FtZXJhIiwic2hvcnRfbmFtZSI6IkdCQ2FtZXJhIiwiZGVzY3JpcHRpb24iOiJHYW1lIEJveSBDYW1lcmEgU2ltdWxhdG9yIiwic3RhcnRfdXJsIjoiLi8iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjOUJCQzBGIiwidGhlbWVfY29sb3IiOiIjOUJCQzBGIiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2UvcG5nO2Jhc2U2NCxpVkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBQmdBQUFBUUNBWUFBQUNnSmZDWkFBQUFCSE5DU1ZRSUNBZ0lmQWhraUFBQUFDWEJJV1hNQUFCWWxBQUFXSlFGSlVpVHdBQUFBSlhSRldIUmtZWFJsT21OeVpXRjBaUUF5TURFekxUQXpMVEU1VkRFek9qVXhPak0zS3pBd01EQXdmRHR4QUFBQUkybEVXSFJrWVhSbE9tTnlaV0YwWlFBeU1ERXpMVEF6TFRFNVZERXpPalV4T2pNM0t6QXdNREF3SDhISkFBQUFIa2xFUVZRNHkyTmdBQUpDUUJCTUFjamVtenAxQUFBQUFFbEZUa1N1UW1DQyIsInNpemVzIjoiMTkyeDE5MiIsInR5cGUiOiJpbWFnZS9wbmcifV19">
+    <meta name="description" content="Game Boy Camera Simulator - Grayscale">
     <style>
         * {
             margin: 0;
@@ -15,8 +14,8 @@
 
         body {
             font-family: 'Courier New', monospace;
-            background: #9BBC0F;
-            color: #0F380F;
+            background: #E0E0E0;
+            color: #1A1A1A;
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -27,20 +26,20 @@
         }
 
         .gameboy-frame {
-            background: #9BBC0F;
-            border: 8px solid #8BAC0F;
+            background: #E0E0E0;
+            border: 8px solid #C0C0C0;
             border-radius: 15px;
             padding: 20px;
             width: 100%;
             max-width: 400px;
             display: flex;
             flex-direction: column;
-            box-shadow: inset -4px -4px 0px #306230, inset 4px 4px 0px #9BBC0F;
+            box-shadow: inset -4px -4px 0px #808080, inset 4px 4px 0px #F0F0F0;
         }
 
         .screen-container {
-            background: #0F380F;
-            border: 4px solid #0F380F;
+            background: #1A1A1A;
+            border: 4px solid #1A1A1A;
             border-radius: 8px;
             padding: 8px;
             flex: 1;
@@ -51,8 +50,8 @@
         }
 
         .screen {
-            background: #9BBC0F;
-            border: 2px solid #306230;
+            background: #E0E0E0;
+            border: 2px solid #808080;
             flex: 1;
             position: relative;
             overflow: hidden;
@@ -65,8 +64,8 @@
         .viewfinder {
             width: 160px;
             height: 144px;
-            background: #9BBC0F;
-            border: 1px solid #306230;
+            background: #E0E0E0;
+            border: 1px solid #808080;
             position: relative;
             image-rendering: pixelated;
             margin: 0 auto;
@@ -100,8 +99,8 @@
         }
 
         .button {
-            background: #306230;
-            color: #9BBC0F;
+            background: #808080;
+            color: #E0E0E0;
             border: none;
             border-radius: 20px;
             padding: 12px 20px;
@@ -109,32 +108,32 @@
             font-weight: bold;
             font-size: 12px;
             cursor: pointer;
-            box-shadow: 2px 2px 0px #0F380F;
+            box-shadow: 2px 2px 0px #1A1A1A;
             transition: all 0.1s;
             text-transform: uppercase;
         }
 
         .button:active {
             transform: translate(1px, 1px);
-            box-shadow: 1px 1px 0px #0F380F;
+            box-shadow: 1px 1px 0px #1A1A1A;
         }
 
         .button:hover {
-            background: #0F380F;
+            background: #1A1A1A;
         }
 
         .button.danger {
-            background: #8B0000;
-            color: #FFB6C1;
+            background: #606060;
+            color: #F0F0F0;
         }
 
         .button.danger:hover {
-            background: #660000;
+            background: #404040;
         }
 
         .status-bar {
-            background: #0F380F;
-            color: #9BBC0F;
+            background: #1A1A1A;
+            color: #E0E0E0;
             padding: 5px 10px;
             font-size: 10px;
             display: flex;
@@ -151,9 +150,9 @@
         }
 
         .filter-btn {
-            background: #8BAC0F;
-            color: #0F380F;
-            border: 1px solid #306230;
+            background: #C0C0C0;
+            color: #1A1A1A;
+            border: 1px solid #808080;
             border-radius: 4px;
             padding: 4px 8px;
             font-size: 10px;
@@ -162,8 +161,8 @@
         }
 
         .filter-btn.active {
-            background: #306230;
-            color: #9BBC0F;
+            background: #808080;
+            color: #E0E0E0;
         }
 
         .photo-gallery {
@@ -172,7 +171,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(15, 56, 15, 0.9);
+            background: rgba(26, 26, 26, 0.9);
             display: none;
             padding: 20px;
             overflow-y: auto;
@@ -191,15 +190,15 @@
         }
 
         .gallery-title {
-            color: #9BBC0F;
+            color: #E0E0E0;
             font-size: 18px;
             font-weight: bold;
             flex: 1;
         }
 
         .close-gallery-x {
-            background: #306230;
-            color: #9BBC0F;
+            background: #808080;
+            color: #E0E0E0;
             border: none;
             border-radius: 50%;
             width: 30px;
@@ -210,18 +209,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 2px 2px 0px #0F380F;
+            box-shadow: 2px 2px 0px #1A1A1A;
             transition: all 0.1s;
             margin-left: 10px;
         }
 
         .close-gallery-x:hover {
-            background: #0F380F;
+            background: #1A1A1A;
         }
 
         .close-gallery-x:active {
             transform: translate(1px, 1px);
-            box-shadow: 1px 1px 0px #0F380F;
+            box-shadow: 1px 1px 0px #1A1A1A;
         }
 
         .gallery-controls {
@@ -239,8 +238,8 @@
         }
 
         .gallery-photo {
-            background: #9BBC0F;
-            border: 2px solid #306230;
+            background: #E0E0E0;
+            border: 2px solid #808080;
             border-radius: 4px;
             aspect-ratio: 1;
             display: flex;
@@ -258,8 +257,8 @@
         }
 
         .clear-gallery {
-            background: #8B0000;
-            color: #FFB6C1;
+            background: #606060;
+            color: #F0F0F0;
             border: none;
             border-radius: 20px;
             padding: 8px 16px;
@@ -271,7 +270,7 @@
         }
 
         .clear-gallery:hover {
-            background: #660000;
+            background: #404040;
         }
 
         .pixelate {
@@ -286,8 +285,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: #9BBC0F;
-            border: 4px solid #306230;
+            background: #E0E0E0;
+            border: 4px solid #808080;
             border-radius: 8px;
             padding: 20px;
             text-align: center;
@@ -297,7 +296,7 @@
         }
 
         .confirm-dialog h3 {
-            color: #0F380F;
+            color: #1A1A1A;
             margin-bottom: 15px;
             font-size: 14px;
         }
@@ -309,8 +308,8 @@
         }
 
         .confirm-btn {
-            background: #306230;
-            color: #9BBC0F;
+            background: #808080;
+            color: #E0E0E0;
             border: none;
             border-radius: 15px;
             padding: 8px 16px;
@@ -322,8 +321,8 @@
         }
 
         .confirm-btn.danger {
-            background: #8B0000;
-            color: #FFB6C1;
+            background: #606060;
+            color: #F0F0F0;
         }
 
         @media (max-width: 480px) {
@@ -464,7 +463,7 @@
                 } catch (error) {
                     console.error('Camera access error:', error);
                     document.querySelector('.viewfinder').innerHTML = 
-                        '<div style="color: #306230; text-align: center; padding: 20px;">CAMERA NOT AVAILABLE</div>';
+                        '<div style="color: #808080; text-align: center; padding: 20px;">CAMERA NOT AVAILABLE</div>';
                 }
             }
 
@@ -486,8 +485,8 @@
                         // Draw video to preview canvas with Game Boy resolution
                         this.previewCtx.drawImage(this.video, 0, 0, 160, 144);
                         
-                        // Apply stable Game Boy effect for preview
-                        this.applyGameBoyEffectStable(this.previewCtx, 160, 144);
+                        // Apply stable grayscale effect for preview
+                        this.applyGrayscaleEffectStable(this.previewCtx, 160, 144);
                     }
                     this.animationId = requestAnimationFrame(updatePreview);
                 };
@@ -522,16 +521,16 @@
 
             capturePhoto() {
                 // Flash effect
-                document.querySelector('.screen').style.background = '#0F380F';
+                document.querySelector('.screen').style.background = '#1A1A1A';
                 setTimeout(() => {
-                    document.querySelector('.screen').style.background = '#9BBC0F';
+                    document.querySelector('.screen').style.background = '#E0E0E0';
                 }, 100);
 
                 // Draw current frame to capture canvas
                 this.ctx.drawImage(this.video, 0, 0, 160, 144);
                 
-                // Apply high-quality Game Boy effect with Floyd-Steinberg dithering
-                this.applyGameBoyEffectHighQuality(this.ctx, 160, 144);
+                // Apply high-quality grayscale effect with Floyd-Steinberg dithering
+                this.applyGrayscaleEffectHighQuality(this.ctx, 160, 144);
                 
                 // Convert to data URL and save
                 const dataURL = this.canvas.toDataURL('image/png');
@@ -553,16 +552,16 @@
                 this.updatePhotoCount();
             }
 
-            applyGameBoyEffectStable(context, width, height) {
+            applyGrayscaleEffectStable(context, width, height) {
                 const imageData = context.getImageData(0, 0, width, height);
                 const data = imageData.data;
                 
-                // Game Boy color palette
+                // Grayscale palette (4 levels)
                 const palette = [
-                    [15, 56, 15],    // Darkest green #0F380F
-                    [48, 98, 48],    // Dark green #306230
-                    [139, 172, 15],  // Light green #8BAC0F
-                    [155, 188, 15]   // Lightest green #9BBC0F
+                    [26, 26, 26],      // Darkest #1A1A1A
+                    [128, 128, 128],   // Dark gray #808080
+                    [192, 192, 192],   // Light gray #C0C0C0
+                    [224, 224, 224]    // Lightest #E0E0E0
                 ];
 
                 // Apply filter effects first
@@ -597,16 +596,16 @@
                 context.putImageData(imageData, 0, 0);
             }
 
-            applyGameBoyEffectHighQuality(context, width, height) {
+            applyGrayscaleEffectHighQuality(context, width, height) {
                 const imageData = context.getImageData(0, 0, width, height);
                 const data = imageData.data;
                 
-                // Game Boy color palette
+                // Grayscale palette (4 levels)
                 const palette = [
-                    [15, 56, 15],    // Darkest green #0F380F
-                    [48, 98, 48],    // Dark green #306230
-                    [139, 172, 15],  // Light green #8BAC0F
-                    [155, 188, 15]   // Lightest green #9BBC0F
+                    [26, 26, 26],      // Darkest #1A1A1A
+                    [128, 128, 128],   // Dark gray #808080
+                    [192, 192, 192],   // Light gray #C0C0C0
+                    [224, 224, 224]    // Lightest #E0E0E0
                 ];
 
                 // Apply filter effects first
@@ -719,7 +718,7 @@
                 });
                 
                 if (this.photos.length === 0) {
-                    grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #9BBC0F; padding: 40px;">NO PHOTOS SAVED</div>';
+                    grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #E0E0E0; padding: 40px;">NO PHOTOS SAVED</div>';
                 }
                 
                 gallery.style.display = 'block';
@@ -764,11 +763,6 @@
         window.addEventListener('load', () => {
             new GameBoyCamera();
         });
-
-        // Register service worker for PWA functionality
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('data:application/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZXZlbnQgPT4ge30pOw==');
-        }
     </script>
 </body>
 </html>
