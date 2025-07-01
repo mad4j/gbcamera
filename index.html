@@ -63,8 +63,8 @@
                 this.video = document.getElementById('video');
                 this.canvas = document.getElementById('canvas');
                 this.previewCanvas = document.getElementById('preview-canvas');
-                this.ctx = this.canvas.getContext('2d');
-                this.previewCtx = this.previewCanvas.getContext('2d');
+                this.ctx = this.canvas.getContext('2d', { willReadFrequently: true });
+                this.previewCtx = this.previewCanvas.getContext('2d', { willReadFrequently: true });
                 this.photos = [];
                 this.currentFilter = 'normal';
                 this.animationId = null;
