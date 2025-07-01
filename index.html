@@ -27,6 +27,7 @@
                 <button class="filter-btn" data-filter="contrast">CONTRAST</button>
                 <button class="filter-btn" data-filter="invert">INVERT</button>
                 <button class="filter-btn" data-filter="blur">MOTION</button>
+                <button class="filter-btn" data-filter="flash">FLASH</button>
             </div>
         </div>
         
@@ -317,20 +318,25 @@
                             const enhanced = gray > 128 ? Math.min(255, gray * 1.5) : Math.max(0, gray * 0.5);
                             data[i] = data[i + 1] = data[i + 2] = enhanced;
                             break;
-                            
+                        case 'flash':
+                            // Aumenta luminosità e contrasto per "flash"
+                            let flashGray = 0.299 * r + 0.587 * g + 0.114 * b;
+                            flashGray = Math.min(255, flashGray * 1.7 + 40); // boost luminosità
+                            // Contrasto più alto
+                            flashGray = flashGray > 128 ? Math.min(255, flashGray * 1.2) : Math.max(0, flashGray * 0.8);
+                            data[i] = data[i + 1] = data[i + 2] = flashGray;
+                            break;
                         case 'invert':
                             data[i] = 255 - r;
                             data[i + 1] = 255 - g;
                             data[i + 2] = 255 - b;
                             break;
-                            
                         case 'blur':
                             const avgGray = (r + g + b) / 3;
                             const noise = (Math.random() - 0.5) * 20;
                             const blurred = Math.max(0, Math.min(255, avgGray + noise));
                             data[i] = data[i + 1] = data[i + 2] = blurred;
                             break;
-                            
                         default: // normal
                             const normalGray = 0.299 * r + 0.587 * g + 0.114 * b;
                             data[i] = data[i + 1] = data[i + 2] = normalGray;
