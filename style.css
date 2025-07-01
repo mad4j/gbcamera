@@ -9,6 +9,9 @@ body {
     background: #E0E0E0;
     color: #1A1A1A;
     height: 100vh;
+    min-height: 100vh;
+    width: 100vw;
+    min-width: 100vw;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -21,46 +24,57 @@ body {
     background: #E0E0E0;
     border: 8px solid #C0C0C0;
     border-radius: 15px;
-    padding: 20px;
-    width: 100%;
+    padding: 0;
+    width: 400px;
     max-width: 400px;
+    min-width: 400px;
+    height: 600px;
     display: flex;
     flex-direction: column;
     box-shadow: inset -4px -4px 0px #808080, inset 4px 4px 0px #F0F0F0;
+    align-items: stretch;
+    justify-content: flex-start;
 }
 
 .screen-container {
     background: #1A1A1A;
     border: 4px solid #1A1A1A;
     border-radius: 8px;
-    padding: 8px;
-    flex: 1;
+    padding: 8px 8px 0 8px;
+    flex: 1 1 0;
     display: flex;
     flex-direction: column;
     position: relative;
     overflow: hidden;
+    min-height: 0;
 }
 
 .screen {
     background: #E0E0E0;
     border: 2px solid #808080;
-    flex: 1;
+    flex: 1 1 0;
     position: relative;
     overflow: hidden;
     image-rendering: pixelated;
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 0;
 }
 
 .viewfinder {
-    width: 160px;
-    height: 144px;
+    width: 100%;
+    aspect-ratio: 160/144;
+    max-width: 384px;
+    max-height: 100%;
     background: #E0E0E0;
     border: 1px solid #808080;
     position: relative;
     image-rendering: pixelated;
     margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #video {
@@ -70,11 +84,12 @@ body {
 #preview-canvas {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
     image-rendering: crisp-edges;
+    display: block;
 }
 
 #canvas {
@@ -85,7 +100,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 15px;
+    margin-top: 10px;
     padding: 0 10px;
     gap: 15px;
 }
@@ -139,6 +154,8 @@ body {
     display: flex;
     gap: 5px;
     margin-top: 10px;
+    margin-bottom: 0;
+    justify-content: center;
 }
 
 .filter-btn {
@@ -338,28 +355,14 @@ body {
 }
 
 @media (max-width: 480px) {
-    body {
-        padding: 5px;
-    }
-    
     .gameboy-frame {
-        max-width: 100%;
-        padding: 15px;
-        border-width: 4px;
+        width: 100vw;
+        min-width: unset;
+        max-width: 100vw;
+        height: 100vh;
+        padding: 0;
     }
-    
-    .controls {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .gallery-controls {
-        flex-direction: column;
-        gap: 5px;
-    }
-    
     .viewfinder {
-        width: 140px;
-        height: 126px;
+        max-width: 100vw;
     }
 }
