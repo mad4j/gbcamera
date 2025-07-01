@@ -33,6 +33,7 @@
         <div class="controls">
             <button class="button" id="capture-btn">CAPTURE</button>
             <button class="button" id="gallery-btn">GALLERY</button>
+            <button class="button" id="switch-camera-btn">CAMERA</button>
         </div>
     </div>
 
@@ -67,6 +68,7 @@
                 this.photos = [];
                 this.currentFilter = 'normal';
                 this.animationId = null;
+                this.facingMode = 'user'; // Track current camera
                 
                 // Create a stable dithering matrix for consistent preview
                 this.ditherMatrix = this.generateStableDitherMatrix(160, 144);
@@ -103,10 +105,11 @@
                         video: { 
                             width: { ideal: 320 },
                             height: { ideal: 240 },
-                            facingMode: 'user'
+                            facingMode: this.facingMode
                         } 
                     });
                     this.video.srcObject = stream;
+                    this.currentStream = stream; // Save for switching
                     
                     this.video.addEventListener('loadedmetadata', () => {
                         this.setupCanvas();
@@ -155,6 +158,7 @@
                 document.getElementById('clear-gallery').addEventListener('click', () => this.showConfirmDialog());
                 document.getElementById('confirm-cancel').addEventListener('click', () => this.hideConfirmDialog());
                 document.getElementById('confirm-delete').addEventListener('click', () => this.clearGallery());
+                document.getElementById('switch-camera-btn').addEventListener('click', () => this.switchCamera());
 
                 // Filter controls
                 document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -395,6 +399,17 @@
             updatePhotoCount() {
                 document.getElementById('photo-count').textContent = 
                     this.photos.length.toString().padStart(3, '0');
+            }
+
+            async switchCamera() {
+                // Toggle facingMode
+                this.facingMode = this.facingMode === 'user' ? 'environment' : 'user';
+                // Stop current stream
+                if (this.currentStream) {
+                    this.currentStream.getTracks().forEach(track => track.stop());
+                }
+                // Re-initialize camera
+                await this.init();
             }
         }
 
