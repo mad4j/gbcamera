@@ -198,9 +198,6 @@
         }
 
         .close-gallery-x {
-            position: absolute;
-            top: -10px;
-            right: 0;
             background: #306230;
             color: #9BBC0F;
             border: none;
@@ -215,6 +212,7 @@
             justify-content: center;
             box-shadow: 2px 2px 0px #0F380F;
             transition: all 0.1s;
+            margin-left: 10px;
         }
 
         .close-gallery-x:hover {
@@ -229,6 +227,7 @@
         .gallery-controls {
             display: flex;
             gap: 10px;
+            align-items: center;
         }
 
         .gallery-grid {
@@ -386,9 +385,9 @@
     <div class="photo-gallery" id="gallery">
         <div class="gallery-header">
             <div class="gallery-title">SAVED PHOTOS</div>
-            <button class="close-gallery-x" id="close-gallery">×</button>
             <div class="gallery-controls">
-                <button class="clear-gallery" id="clear-gallery">DELETE ALL</button>
+                <button class="clear-gallery" id="clear-gallery">🗑️</button>
+                 <button class="close-gallery-x" id="close-gallery">×</button>
             </div>
         </div>
         <div class="gallery-grid" id="gallery-grid">
