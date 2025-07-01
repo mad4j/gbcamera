@@ -1,0 +1,345 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    background: #E0E0E0;
+    color: #1A1A1A;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 10px;
+}
+
+.gameboy-frame {
+    background: #E0E0E0;
+    border: 8px solid #C0C0C0;
+    border-radius: 15px;
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: inset -4px -4px 0px #808080, inset 4px 4px 0px #F0F0F0;
+}
+
+.screen-container {
+    background: #1A1A1A;
+    border: 4px solid #1A1A1A;
+    border-radius: 8px;
+    padding: 8px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.screen {
+    background: #E0E0E0;
+    border: 2px solid #808080;
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    image-rendering: pixelated;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.viewfinder {
+    width: 160px;
+    height: 144px;
+    background: #E0E0E0;
+    border: 1px solid #808080;
+    position: relative;
+    image-rendering: pixelated;
+    margin: 0 auto;
+}
+
+#video {
+    display: none;
+}
+
+#preview-canvas {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+#canvas {
+    display: none;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    padding: 0 10px;
+    gap: 15px;
+}
+
+.button {
+    background: #808080;
+    color: #E0E0E0;
+    border: none;
+    border-radius: 20px;
+    padding: 12px 20px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    font-size: 12px;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px #1A1A1A;
+    transition: all 0.1s;
+    text-transform: uppercase;
+}
+
+.button:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px #1A1A1A;
+}
+
+.button:hover {
+    background: #1A1A1A;
+}
+
+.button.danger {
+    background: #606060;
+    color: #F0F0F0;
+}
+
+.button.danger:hover {
+    background: #404040;
+}
+
+.status-bar {
+    background: #1A1A1A;
+    color: #E0E0E0;
+    padding: 5px 10px;
+    font-size: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    border-radius: 4px;
+}
+
+.filter-controls {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.filter-btn {
+    background: #C0C0C0;
+    color: #1A1A1A;
+    border: 1px solid #808080;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 10px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+}
+
+.filter-btn.active {
+    background: #808080;
+    color: #E0E0E0;
+}
+
+.photo-gallery {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(26, 26, 26, 0.9);
+    display: none;
+    padding: 20px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.gallery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+
+.gallery-title {
+    color: #E0E0E0;
+    font-size: 18px;
+    font-weight: bold;
+    flex: 1;
+}
+
+.close-gallery-x {
+    background: #808080;
+    color: #E0E0E0;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 0px #1A1A1A;
+    transition: all 0.1s;
+    margin-left: 10px;
+}
+
+.close-gallery-x:hover {
+    background: #1A1A1A;
+}
+
+.close-gallery-x:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px #1A1A1A;
+}
+
+.gallery-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.gallery-photo {
+    background: #E0E0E0;
+    border: 2px solid #808080;
+    border-radius: 4px;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.gallery-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    image-rendering: pixelated;
+}
+
+.clear-gallery {
+    background: #606060;
+    color: #F0F0F0;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.clear-gallery:hover {
+    background: #404040;
+}
+
+.pixelate {
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+.confirm-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #E0E0E0;
+    border: 4px solid #808080;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    z-index: 1002;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    display: none;
+}
+
+.confirm-dialog h3 {
+    color: #1A1A1A;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.confirm-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.confirm-btn {
+    background: #808080;
+    color: #E0E0E0;
+    border: none;
+    border-radius: 15px;
+    padding: 8px 16px;
+    font-size: 10px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.confirm-btn.danger {
+    background: #606060;
+    color: #F0F0F0;
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 5px;
+    }
+    
+    .gameboy-frame {
+        max-width: 100%;
+        padding: 15px;
+        border-width: 4px;
+    }
+    
+    .controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .gallery-controls {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .viewfinder {
+        width: 140px;
+        height: 126px;
+    }
+}
