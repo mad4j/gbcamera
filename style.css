@@ -287,31 +287,42 @@ body {
         min-height: 100vh;
         width: 100vw;
         height: 100vh;
+        overflow: hidden;
     }
     .gameboy-frame {
-        width: 100vw;
-        height: 100vh;
-        min-width: unset;
-        min-height: unset;
-        max-width: 100vw;
-        max-height: 100vh;
-        border-radius: 0;
-        border-width: 0;
-        box-shadow: none;
-        padding: 0;
+        width: 100vw !important;
+        height: 100vh !important;
+        min-width: 100vw !important;
+        min-height: 100vh !important;
+        max-width: 100vw !important;
+        max-height: 100vh !important;
+        border-radius: 0 !important;
+        border-width: 0 !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        position: fixed;
+        left: 0; top: 0;
     }
     .screen-container {
         border-radius: 0;
         margin: 0;
         padding: 8px 0 0 0;
+        flex: 1 1 0;
+        height: 100%;
     }
     .screen {
         border-radius: 0;
+        flex: 1 1 0;
+        height: 100%;
     }
     .viewfinder {
-        max-width: 100vw;
-        max-height: 100vw;
+        width: 100vw !important;
+        height: 100vw !important;
+        max-width: 100vw !important;
+        max-height: 100vw !important;
         aspect-ratio: 160/144;
+        margin: 0 auto;
     }
     .controls {
         margin-top: 8px;
