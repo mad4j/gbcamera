@@ -99,7 +99,7 @@
                 // This prevents localStorage issues in the artifact environment
             }
 
-            async init() {
+            async initializeCameraStream() {
                 try {
                     const stream = await navigator.mediaDevices.getUserMedia({ 
                         video: { 
@@ -110,19 +110,25 @@
                     });
                     this.video.srcObject = stream;
                     this.currentStream = stream; // Save for switching
-                    
-                    this.video.addEventListener('loadedmetadata', () => {
-                        this.setupCanvas();
-                        this.startPreview();
-                    });
-                    
-                    this.setupEventListeners();
-                    this.updatePhotoCount();
+                    return true;
                 } catch (error) {
                     console.error('Camera access error:', error);
                     document.querySelector('.viewfinder').innerHTML = 
                         '<div style="color: #808080; text-align: center; padding: 20px;">CAMERA NOT AVAILABLE</div>';
+                    return false;
                 }
+            }
+
+            async init() {
+                const cameraReady = await this.initializeCameraStream();
+                if (cameraReady) {
+                    this.video.addEventListener('loadedmetadata', () => {
+                        this.setupCanvas();
+                        this.startPreview();
+                    }, { once: true });
+                }
+                this.setupEventListeners();
+                this.updatePhotoCount();
             }
 
             setupCanvas() {
@@ -408,8 +414,8 @@
                 if (this.currentStream) {
                     this.currentStream.getTracks().forEach(track => track.stop());
                 }
-                // Re-initialize camera
-                await this.init();
+                // Only re-initialize the camera stream
+                await this.initializeCameraStream();
             }
         }
 
