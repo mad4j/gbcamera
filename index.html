@@ -600,7 +600,7 @@
                 const imageData = context.getImageData(0, 0, width, height);
                 const data = imageData.data;
                 
-                // Grayscale palette (4 levels)
+                // Same grayscale palette as preview
                 const palette = [
                     [26, 26, 26],      // Darkest #1A1A1A
                     [128, 128, 128],   // Dark gray #808080
@@ -611,7 +611,7 @@
                 // Apply filter effects first
                 this.applyFilterEffect(data, width, height);
                 
-                // Apply Floyd-Steinberg dithering for saved photos
+                // Use the same stable dithering algorithm as preview for consistency
                 for (let y = 0; y < height; y++) {
                     for (let x = 0; x < width; x++) {
                         const i = (y * width + x) * 4;
@@ -622,30 +622,18 @@
                         // Convert to grayscale
                         const gray = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
                         
-                        // Apply Floyd-Steinberg dithering
-                        const oldPixel = gray;
-                        const newPixel = this.findClosestPaletteIndex(oldPixel);
-                        const quantError = oldPixel - (newPixel * 85); // 85 = 255/3 for 4 levels
+                        // Apply the same stable dithering as preview
+                        const threshold = this.ditherMatrix[y][x] * 64 - 32;
+                        const ditheredGray = Math.max(0, Math.min(255, gray + threshold));
+                        
+                        // Quantize to 4 levels
+                        const paletteIndex = this.findClosestPaletteIndex(ditheredGray);
                         
                         // Set new pixel color
-                        const color = palette[newPixel];
+                        const color = palette[paletteIndex];
                         data[i] = color[0];
                         data[i + 1] = color[1];
                         data[i + 2] = color[2];
-                        
-                        // Distribute error to neighboring pixels
-                        if (x < width - 1) {
-                            this.addError(data, width, x + 1, y, quantError * 7 / 16);
-                        }
-                        if (y < height - 1) {
-                            if (x > 0) {
-                                this.addError(data, width, x - 1, y + 1, quantError * 3 / 16);
-                            }
-                            this.addError(data, width, x, y + 1, quantError * 5 / 16);
-                            if (x < width - 1) {
-                                this.addError(data, width, x + 1, y + 1, quantError * 1 / 16);
-                            }
-                        }
                     }
                 }
                 
@@ -695,12 +683,8 @@
             }
 
             addError(data, width, x, y, error) {
-                const i = (y * width + x) * 4;
-                if (i >= 0 && i < data.length) {
-                    const gray = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
-                    const newGray = Math.max(0, Math.min(255, gray + error));
-                    data[i] = data[i + 1] = data[i + 2] = newGray;
-                }
+                // This function is no longer needed since we're using the same dithering algorithm
+                // for both preview and capture
             }
 
             showGallery() {
