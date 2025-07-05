@@ -374,8 +374,9 @@ body {
     }
     
     .gallery-controls {
-        flex-direction: column;
-        gap: 5px;
+        flex-direction: row !important; /* Forza sempre la riga anche su mobile */
+        gap: 10px;
+        justify-content: flex-end;
     }
     
     .viewfinder {
