@@ -23,7 +23,7 @@ body {
     border-radius: 15px;
     padding: 20px;
     width: 100%;
-    max-width: 400px;
+    max-width: 420px;
     display: flex;
     flex-direction: column;
     box-shadow: inset -4px -4px 0px #808080, inset 4px 4px 0px #F0F0F0;
@@ -54,13 +54,18 @@ body {
 }
 
 .viewfinder {
-    width: 160px;
-    height: 144px;
+    width: min(100%, 360px);
+    min-width: 246px;
+    height: auto;
+    aspect-ratio: 1 / 1;
     background: #E0E0E0;
     border: 1px solid #808080;
     position: relative;
     image-rendering: pixelated;
     margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #video {
@@ -70,11 +75,13 @@ body {
 #preview-canvas {
     width: 100%;
     height: 100%;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-crisp-edges;
     image-rendering: crisp-edges;
+    display: block;
 }
 
 #canvas {
@@ -88,6 +95,7 @@ body {
     margin-top: 15px;
     padding: 0 10px;
     gap: 15px;
+    flex-direction: row;
 }
 
 .button {
@@ -359,7 +367,12 @@ body {
     }
     
     .viewfinder {
-        width: 140px;
-        height: 126px;
+        min-width: 140px;
+        width: 100%;
+        max-width: 100vw;
+        aspect-ratio: 1 / 1;
+    }
+    #preview-canvas {
+        aspect-ratio: 1 / 1;
     }
 }
