@@ -369,7 +369,7 @@ body {
     }
     
     .controls {
-        flex-direction: column;
+        flex-direction: row !important;
         gap: 10px;
     }
     
