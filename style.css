@@ -157,8 +157,12 @@ body {
 
 .filter-controls {
     display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     gap: 5px;
     margin-top: 10px;
+    width: 100%;
 }
 
 .filter-btn {
