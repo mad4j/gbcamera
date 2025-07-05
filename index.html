@@ -5,9 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Boy Camera</title>
     <meta name="description" content="Game Boy Camera Simulator - Grayscale">
+    <meta name="theme-color" content="#1A1A1A">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="app-192x192.png">
 </head>
 <body>
     <div class="gameboy-frame">
@@ -65,5 +70,14 @@
     </div>
 
     <script src="app.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('service-worker.js')
+            .then(function(reg) { /* success */ })
+            .catch(function(err) { /* error */ });
+        });
+      }
+    </script>
 </body>
 </html>
