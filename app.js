@@ -270,12 +270,6 @@ class GameBoyCamera {
                     data[i + 1] = 255 - g;
                     data[i + 2] = 255 - b;
                     break;
-                case 'blur':
-                    const avgGray = (r + g + b) / 3;
-                    const noise = (Math.random() - 0.5) * 20;
-                    const blurred = Math.max(0, Math.min(255, avgGray + noise));
-                    data[i] = data[i + 1] = data[i + 2] = blurred;
-                    break;
                 default: // normal
                     const normalGray = 0.299 * r + 0.587 * g + 0.114 * b;
                     data[i] = data[i + 1] = data[i + 2] = normalGray;
