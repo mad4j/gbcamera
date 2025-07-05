@@ -122,6 +122,18 @@ body {
     background: #1A1A1A;
 }
 
+.button:focus {
+    outline: none;
+    background: #808080;
+    color: #E0E0E0;
+}
+
+.button:focus:not(:focus-visible) {
+    outline: none;
+    background: #808080;
+    color: #E0E0E0;
+}
+
 .button.danger {
     background: #606060;
     color: #F0F0F0;
