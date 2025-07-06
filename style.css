@@ -98,6 +98,10 @@ body {
     flex-direction: row;
 }
 
+.controls .button:last-child {
+    margin-left: 40px;
+}
+
 .button {
     background: #808080;
     color: #E0E0E0;
