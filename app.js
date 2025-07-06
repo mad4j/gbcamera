@@ -87,8 +87,15 @@ class GameBoyCamera {
         const updatePreview = () => {
             if (this.video.readyState >= 2) {
                 // Draw video to preview canvas with Game Boy resolution
-                this.previewCtx.drawImage(this.video, 0, 0, 160, 144);
-                
+                if (this.currentFilter === 'mirror') {
+                    this.previewCtx.save();
+                    this.previewCtx.translate(160, 0);
+                    this.previewCtx.scale(-1, 1);
+                    this.previewCtx.drawImage(this.video, 0, 0, 160, 144);
+                    this.previewCtx.restore();
+                } else {
+                    this.previewCtx.drawImage(this.video, 0, 0, 160, 144);
+                }
                 // Apply stable grayscale effect for preview
                 this.applyGrayscaleEffectStable(this.previewCtx, 160, 144);
             }
@@ -132,7 +139,15 @@ class GameBoyCamera {
         }, 100);
 
         // Draw current frame to capture canvas
-        this.ctx.drawImage(this.video, 0, 0, 160, 144);
+        if (this.currentFilter === 'mirror') {
+            this.ctx.save();
+            this.ctx.translate(160, 0);
+            this.ctx.scale(-1, 1);
+            this.ctx.drawImage(this.video, 0, 0, 160, 144);
+            this.ctx.restore();
+        } else {
+            this.ctx.drawImage(this.video, 0, 0, 160, 144);
+        }
         
         // Apply high-quality grayscale effect with Floyd-Steinberg dithering
         this.applyGrayscaleEffectHighQuality(this.ctx, 160, 144);
@@ -269,6 +284,12 @@ class GameBoyCamera {
                     data[i] = 255 - r;
                     data[i + 1] = 255 - g;
                     data[i + 2] = 255 - b;
+                    break;
+                case 'mirror':
+                    // Mirror effect will be handled in the drawing function, not here
+                    // Just use normal grayscale for now
+                    const mirrorGray = 0.299 * r + 0.587 * g + 0.114 * b;
+                    data[i] = data[i + 1] = data[i + 2] = mirrorGray;
                     break;
                 default: // normal
                     const normalGray = 0.299 * r + 0.587 * g + 0.114 * b;
