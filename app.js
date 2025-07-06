@@ -6,7 +6,7 @@ class GameBoyCamera {
         this.ctx = this.canvas.getContext('2d', { willReadFrequently: true });
         this.previewCtx = this.previewCanvas.getContext('2d', { willReadFrequently: true });
         this.photos = [];
-        this.currentFilter = 'normal';
+        this.activeFilters = []; // Now supports multiple filters
         this.animationId = null;
         this.facingMode = 'user'; // Track current camera
         
@@ -87,7 +87,7 @@ class GameBoyCamera {
         const updatePreview = () => {
             if (this.video.readyState >= 2) {
                 // Draw video to preview canvas with Game Boy resolution
-                if (this.currentFilter === 'mirror') {
+                if (this.activeFilters.includes('mirror')) {
                     this.previewCtx.save();
                     this.previewCtx.translate(160, 0);
                     this.previewCtx.scale(-1, 1);
@@ -113,12 +113,17 @@ class GameBoyCamera {
         document.getElementById('confirm-delete').addEventListener('click', () => this.clearGallery());
         document.getElementById('switch-camera-btn').addEventListener('click', () => this.switchCamera());
 
-        // Filter controls
+        // Filter controls (toggle, no 'normal')
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                document.querySelector('.filter-btn.active').classList.remove('active');
-                e.target.classList.add('active');
-                this.currentFilter = e.target.dataset.filter;
+                const filter = e.target.dataset.filter;
+                if (this.activeFilters.includes(filter)) {
+                    this.activeFilters = this.activeFilters.filter(f => f !== filter);
+                    e.target.classList.remove('active');
+                } else {
+                    this.activeFilters.push(filter);
+                    e.target.classList.add('active');
+                }
             });
         });
 
@@ -139,7 +144,7 @@ class GameBoyCamera {
         }, 100);
 
         // Draw current frame to capture canvas
-        if (this.currentFilter === 'mirror') {
+        if (this.activeFilters.includes('mirror')) {
             this.ctx.save();
             this.ctx.translate(160, 0);
             this.ctx.scale(-1, 1);
@@ -148,26 +153,21 @@ class GameBoyCamera {
         } else {
             this.ctx.drawImage(this.video, 0, 0, 160, 144);
         }
-        
-        // Apply high-quality grayscale effect with Floyd-Steinberg dithering
+        // Apply high-quality grayscale effect
         this.applyGrayscaleEffectHighQuality(this.ctx, 160, 144);
-        
         // Convert to data URL and save
         const dataURL = this.canvas.toDataURL('image/png');
         const timestamp = new Date().toISOString();
-        
         this.photos.unshift({
             id: Date.now(),
             data: dataURL,
             timestamp: timestamp,
-            filter: this.currentFilter
+            filter: this.activeFilters.slice()
         });
-        
         // Keep only the last 30 photos
         if (this.photos.length > 30) {
             this.photos = this.photos.slice(0, 30);
         }
-        
         this.savePhotos();
         this.updatePhotoCount();
     }
@@ -261,41 +261,30 @@ class GameBoyCamera {
     }
 
     applyFilterEffect(data, width, height) {
+        // Applica tutti i filtri attivi in sequenza
         for (let i = 0; i < data.length; i += 4) {
-            const r = data[i];
-            const g = data[i + 1];
-            const b = data[i + 2];
-            
-            switch (this.currentFilter) {
-                case 'contrast':
-                    const gray = 0.299 * r + 0.587 * g + 0.114 * b;
-                    const enhanced = gray > 128 ? Math.min(255, gray * 1.5) : Math.max(0, gray * 0.5);
-                    data[i] = data[i + 1] = data[i + 2] = enhanced;
-                    break;
-                case 'flash':
-                    // Aumenta luminosità e contrasto per "flash"
-                    let flashGray = 0.299 * r + 0.587 * g + 0.114 * b;
-                    flashGray = Math.min(255, flashGray * 1.7 + 40); // boost luminosità
-                    // Contrasto più alto
-                    flashGray = flashGray > 128 ? Math.min(255, flashGray * 1.2) : Math.max(0, flashGray * 0.8);
-                    data[i] = data[i + 1] = data[i + 2] = flashGray;
-                    break;
-                case 'invert':
-                    data[i] = 255 - r;
-                    data[i + 1] = 255 - g;
-                    data[i + 2] = 255 - b;
-                    break;
-                case 'mirror':
-                    // Mirror effect will be handled in the drawing function, not here
-                    // Just use normal grayscale for now
-                    const mirrorGray = 0.299 * r + 0.587 * g + 0.114 * b;
-                    data[i] = data[i + 1] = data[i + 2] = mirrorGray;
-                    break;
-                default: // normal
-                    const normalGray = 0.299 * r + 0.587 * g + 0.114 * b;
-                    data[i] = data[i + 1] = data[i + 2] = normalGray;
-                    break;
-            }
+            let r = data[i];
+            let g = data[i + 1];
+            let b = data[i + 2];
+            let gray = 0.299 * r + 0.587 * g + 0.114 * b;
+            // Applica ogni filtro attivo (escluso mirror, che è gestito altrove)
+            let filters = this.activeFilters;
+            filters.forEach(filter => {
+                switch (filter) {
+                    case 'contrast':
+                        gray = gray > 128 ? Math.min(255, gray * 1.5) : Math.max(0, gray * 0.5);
+                        break;
+                    case 'flash':
+                        gray = Math.min(255, gray * 1.7 + 40);
+                        gray = gray > 128 ? Math.min(255, gray * 1.2) : Math.max(0, gray * 0.8);
+                        break;
+                    case 'invert':
+                        gray = 255 - gray;
+                        break;
+                    // 'mirror' handled in draw
+                }
+            });
+            data[i] = data[i + 1] = data[i + 2] = gray;
         }
     }
 
