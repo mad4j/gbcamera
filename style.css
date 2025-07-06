@@ -373,7 +373,7 @@ footer {
     width: 100vw;
     text-align: center;
     padding: 12px 0 8px 0;
-    font-size: 12px;
+    font-size: 16px;
     color: #808080;
     background: transparent;
     font-family: 'Courier New', monospace;
@@ -435,7 +435,7 @@ footer a:hover {
     }
     
     footer {
-        font-size: 10px;
+        font-size: 16px;
         padding: 8px 0 6px 0;
     }
 }
